@@ -1,6 +1,7 @@
 package implmap
 
 import (
+	"fmt"
 	"reflect"
 	"sync"
 )
@@ -21,6 +22,12 @@ func Add(n string, t reflect.Type) {
 	if !ok || a == nil {
 		a = []reflect.Type{}
 	}
+
+	l := len(a)
+	if l > 0 {
+		fmt.Println(fmt.Sprintf("implmap append new type(%v) impl to name(%v) at index(%v), old array=%v", t, n, l, a))
+	}
+
 	a = append(a, t)
 	m[n] = a
 }
