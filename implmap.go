@@ -51,7 +51,22 @@ func Get(n string) []reflect.Type {
 	}
 	return ret
 }
-
+func GetAll() map[string][]reflect.Type {
+	l.RLock()
+	defer l.RUnlock()
+	mCopy := make(map[string][]reflect.Type)
+	for key := range m {
+		ret := []reflect.Type{}
+		for _, t := range m[key] {
+			if t == nil {
+				continue
+			}
+			ret = append(ret, t)
+			mCopy[key] = ret
+		}
+	}
+	return mCopy
+}
 func isStructPtr(t reflect.Type) bool {
 	return t != nil && t.Kind() == reflect.Ptr && t.Elem().Kind() == reflect.Struct
 }
